@@ -5,10 +5,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { GiphySavingService} from '../giphySaving.service'
+import { GiphyRetrievalService } from '../giphyRetrieval.service';
+import { ImageCardComponent } from './components/image-card.component';
+import { TopBarComponent } from './Components/top-bar.component'
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ImageCardComponent,
+    TopBarComponent
   ],
   imports: [
     BrowserModule,
@@ -16,7 +21,7 @@ import { GiphySavingService} from '../giphySaving.service'
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [ GiphySavingService ],
+  providers: [ GiphySavingService, GiphyRetrievalService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
