@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { GiphySavingService } from '../giphySaving.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  
+  @ViewChild('testForm') itemForm: NgForm;
+
+  constructor(private saveSvc: GiphySavingService) { }
+
+  saveGiphy() {
+    this.saveSvc.saveToDb(this.itemForm.value.userId, this.itemForm.value.giphyId);
+  }
 }
