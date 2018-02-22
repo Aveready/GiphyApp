@@ -5,8 +5,15 @@
         <p class="nav-link">Saved</p>
       </li>
       <li class="nav-item">
-        <input type="text">
-        <input type="submit"> 
+        <form class="form-inline" #searchForm="ngForm" (ngSubmit)="getSearchTerm()">
+          <div class="form-group">
+            <input type="text" id='searchText' name='searchText' ngModel>
+            <button type="submit">Search</button>
+            <select name='rating'>
+              <option *ngFor="let r of ratings" value={{r}}>{{r}}</option>
+            </select>
+          </div>
+        </form>
       </li>
     </ul>
   </nav>

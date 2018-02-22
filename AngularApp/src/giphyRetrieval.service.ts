@@ -1,11 +1,12 @@
-import {Injectable} from '@angular/core';
+import {Injectable, EventEmitter} from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/toPromise';
 
+
 @Injectable()
 export class GiphyRetrievalService {
-
+    retrieveEvent = new EventEmitter<any>();
     constructor(private http: HttpClient) {}
 
     retrieveGiphys(userId: number): Promise<any> {
