@@ -22,7 +22,7 @@ import { TopBarComponent } from './Components/top-bar.component'
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [GiphySavingService, GiphyRetrievalService],
+  providers: [GiphySavingService, GiphyRetrievalService, SearchService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

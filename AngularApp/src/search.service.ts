@@ -9,7 +9,7 @@ export class SearchService  {
 
     searchEvent = new EventEmitter<HttpParams>();
 
-    private apiURL = 'https://api.giphy.com/v1/gifs/search?';
+    private apiURL = 'https://api.giphy.com/v1/gifs/search';
     constructor(private http: HttpClient) { }
     getPostObserve(httpParams: HttpParams): Promise<any> {
         // returns observable

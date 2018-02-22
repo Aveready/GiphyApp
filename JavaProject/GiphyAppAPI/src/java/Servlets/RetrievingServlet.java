@@ -29,39 +29,42 @@ import javax.ws.rs.core.MediaType;
  */
 @WebServlet(urlPatterns = {"/Retrieval"})
 public class RetrievingServlet extends HttpServlet {
-    
+
     @Resource(lookup = "jdbc/giphy")
     private DataSource connPool;
-    
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         JsonArrayBuilder giphyBuilder = Json.createArrayBuilder();
         Integer userId = Integer.parseInt(req.getParameter("userId"));
 
-		try (Connection conn = connPool.getConnection()) {
+        try (Connection conn = connPool.getConnection()) {
 
-			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users_giphy WHERE userId = ?");
-                        stmt.setInt(1, userId);
-			ResultSet rs = stmt.executeQuery();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users_giphy WHERE userId = ?");
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
 
-			while (rs.next()) {
-				JsonObject giphy = Json.createObjectBuilder()
-						.add("giphyId", rs.getString("giphyId"))
-						.build();
-				giphyBuilder.add(giphy);
-			}
-			rs.close();
-		} catch (SQLException ex) {
-			log(ex.getMessage());
-			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		}
+            while (rs.next()) {
+                JsonObject giphy = Json.createObjectBuilder()
+                        .add("giphyId", rs.getString("giphyId"))
+                        .build();
+                giphyBuilder.add(giphy);
+            }
+            rs.close();
+            conn.close();
+        } catch (SQLException ex) {
+            log(ex.getMessage());
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
 
-		try (PrintWriter pw = resp.getWriter()) {
-			resp.setStatus(HttpServletResponse.SC_OK);
-			resp.setContentType(MediaType.APPLICATION_JSON);
-			pw.println(giphyBuilder.build().toString());
-		}
+        try (PrintWriter pw = resp.getWriter()) {
+            resp.setHeader("Access-Control-Allow-Origin", "*");
+            resp.setHeader("Access-Control-Allow-Origin-Methods", "GET, POST, OPTIONS");
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.setContentType(MediaType.APPLICATION_JSON);
+            pw.println(giphyBuilder.build().toString());
+        }
     }
 
 }

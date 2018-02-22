@@ -14,7 +14,8 @@ export class TopBarComponent implements OnInit {
   @ViewChild('searchForm')
   searchForm: NgForm;
 
-  private api_key = 'yWGwOlIijDWcGy5DH9QV5wWr5wGwDXd3';
+  // private api_key = 'yWGwOlIijDWcGy5DH9QV5wWr5wGwDXd3';
+  private api_key = 'ncFswLvKX0DijHE7G1eVBKofyq6p44Ay';
   private query: string;
   private limit = '25';
   private offset = '0';
@@ -25,13 +26,13 @@ export class TopBarComponent implements OnInit {
 
   ngOnInit() { }
   getSearchTerm() {
-    const httpParams = new HttpParams();
-    httpParams.set('api_key', this.api_key);
-    httpParams.set('q', this.searchForm.value.searchText);
-    httpParams.set('limit', this.limit);
-    httpParams.set('offset', this.offset);
-    httpParams.set('rating', this.ratings[0]);
-    httpParams.set('lang', this.language);
+    const httpParams = new HttpParams()
+    .set('api_key', this.api_key)
+    .set('q', this.searchForm.value.searchText)
+    .set('limit', this.limit)
+    .set('offset', this.offset)
+    .set('rating', this.ratings[0])
+    .set('lang', this.language);
     return this.searchService.searchEvent.next(httpParams);
   }
   }

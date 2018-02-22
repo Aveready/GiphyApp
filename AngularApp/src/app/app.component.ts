@@ -14,29 +14,48 @@ export class AppComponent {
   
 
   saved: boolean = false;
-  giphyId: string[] = [ 'ZRrbwYCGzpjoY' ];
-  param: HttpParams = null;
+  giphyId: string[] = [ ];
   resultsArr: any[] = []
+  userId: number;
 
   constructor(private searchSvc: SearchService, private retrieveSvc: GiphyRetrievalService) { }
   
   ngOnInit() {
     this.searchSvc.searchEvent.subscribe(
-      (searchString) => {
+      (param) => {
         this.saved = false;   //show save button along with giphys
-        // this.param = new HttpParams()
-        // .set('api_key', 'ncFswLvKX0DijHE7G1eVBKofyq6p44Ay')
-        // .set('q', searchString)
-        // .set('limit', '25')
-        // .set('offset', '0')
-        // .set('rating', 'G')
-        // .set('lang', 'en');
-        this.searchSvc.getPostObserve(this.param)
+        
+        this.searchSvc.getPostObserve(param)
         .then((searchResults) =>{
-          // this.resultsArr = searchResults
+          this.resultsArr = searchResults.data;
+          console.log(searchResults);
+          this.resultsArr.forEach(giphy => {
+            this.giphyId.push(giphy.id);
+          })
+        })
+        .catch((err) => {
+          console.log(err);
         })
       }
     )
+
+    // this.retrieveSvc.retrieveEvent.subscribe(
+    //   () => {
+        this.saved = true;
+        this.retrieveSvc.retrieveGiphys(54)
+        .then((results) => {
+          this.resultsArr = results;
+          console.log(results);
+          this.resultsArr.forEach(giphy => {
+            this.giphyId.push(giphy.giphyId);
+          })
+          console.log(this.giphyId);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    //   }
+    // )
   }
 
 }
