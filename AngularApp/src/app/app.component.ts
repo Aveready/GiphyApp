@@ -8,12 +8,10 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  
-  @ViewChild('testForm') itemForm: NgForm;
+
+
+  saved: boolean = false;
+  giphyId: string[] = [ 'ZRrbwYCGzpjoY' ];
 
   constructor(private saveSvc: GiphySavingService) { }
-
-  saveGiphy() {
-    this.saveSvc.saveToDb(this.itemForm.value.userId, this.itemForm.value.giphyId);
-  }
 }
