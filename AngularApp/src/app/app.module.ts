@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { GiphySavingService } from '../giphySaving.service';
 import { GiphyRetrievalService } from '../giphyRetrieval.service';
 import { SearchService } from '../search.service';
+import { UserAddingService } from '../userAdding.service';
 import { ImageCardComponent } from './components/image-card.component';
 import { TopBarComponent } from './Components/top-bar.component';
 
@@ -23,7 +24,7 @@ import { TopBarComponent } from './Components/top-bar.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [GiphySavingService, GiphyRetrievalService, SearchService, CookieService],
+  providers: [GiphySavingService, GiphyRetrievalService, SearchService, CookieService, UserAddingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
