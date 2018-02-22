@@ -5,13 +5,13 @@ import 'rxjs/add/operator/toPromise';
 // import 'rxjs/add/operator/map';
 
 @Injectable()
-export class SearchService {
+export class SearchService  {
 
-    searchEvent = new EventEmitter<string>();
+    searchEvent = new EventEmitter<HttpParams>();
 
     private apiURL = 'https://api.giphy.com/v1/gifs/search?';
     constructor(private http: HttpClient) { }
-    getPostObserve(httpParams: HttpParams) {
+    getPostObserve(httpParams: HttpParams): Promise<any> {
         // returns observable
         return this.http.get(this.apiURL, {params: httpParams}).take(1).toPromise();
     }
