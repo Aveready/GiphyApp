@@ -2,13 +2,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppComponent } from './app.component';
-import { GiphySavingService } from '../giphySaving.service'
+import { GiphySavingService } from '../giphySaving.service';
 import { GiphyRetrievalService } from '../giphyRetrieval.service';
 import { SearchService } from '../search.service';
 import { ImageCardComponent } from './components/image-card.component';
-import { TopBarComponent } from './Components/top-bar.component'
+import { TopBarComponent } from './Components/top-bar.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { TopBarComponent } from './Components/top-bar.component'
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [GiphySavingService, GiphyRetrievalService, SearchService],
+  providers: [GiphySavingService, GiphyRetrievalService, SearchService, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
