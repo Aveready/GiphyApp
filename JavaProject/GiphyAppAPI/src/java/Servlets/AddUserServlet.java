@@ -7,82 +7,67 @@ package Servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.annotation.Resource;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+import javax.ws.rs.core.MediaType;
 
-/**
- *
- * @author edwon
- */
 @WebServlet(name = "AddUserServlet", urlPatterns = {"/AddUser"})
 public class AddUserServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    @Resource(lookup = "jdbc/giphy")
+    private DataSource connPool;
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AddUserServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AddUserServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        Integer userId = Integer.parseInt(req.getParameter("userId"));
+
+        JsonArrayBuilder idBuilder = Json.createArrayBuilder();
+        JsonObject idReturn = null;
+
+        try (Connection conn = connPool.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO users () Values()");
+            stmt.setInt(1, userId);
+            stmt.executeUpdate();
+            stmt.close();
+
+            Statement query = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users ORDER BY userId DESC LIMIT 1");
+
+            while (rs.next()) {
+                idReturn = Json.createObjectBuilder()
+                        .add("userId", rs.getInt("userId"))
+                        .build();
+            }
+            rs.close();
+
+            conn.close();
+
+        } catch (SQLException ex) {
+            log(ex.getMessage());
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+
+        try (PrintWriter pw = resp.getWriter()) {
+            resp.setHeader("Access-Control-Allow-Origin", "*");
+            resp.setHeader("Access-Control-Allow-Origin-Methods", "GET, POST, OPTIONS");
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.setContentType(MediaType.APPLICATION_JSON);
+            pw.println(idReturn.toString());
         }
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }
