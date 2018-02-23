@@ -42,9 +42,6 @@ public class AddUserServlet extends HttpServlet {
 
             Statement query = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM users ORDER BY userId DESC LIMIT 1");
-            System.out.println("a");
-            System.out.println(rs);
-            System.out.println("b");
             while (rs.next()) {
                 idReturn = Json.createObjectBuilder()
                         .add("userId", rs.getInt("userId"))

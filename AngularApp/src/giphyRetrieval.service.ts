@@ -9,9 +9,9 @@ export class GiphyRetrievalService {
     retrieveEvent = new EventEmitter<any>();
     constructor(private http: HttpClient) {}
 
-    retrieveGiphys(userId: number): Promise<any> {
+    retrieveGiphys(userId: string): Promise<any> {
         let param = new HttpParams()
-        .set('userId', userId.toString());
+        .set('userId', userId);
 
         return (
             this.http.get('http://localhost:8080/GiphyAppAPI/Retrieval', { params: param })

@@ -32,6 +32,7 @@ export class AppComponent {
     // subscribe to search
     this.searchSvc.searchEvent.subscribe(
       (param) => {
+        this.giphyId = [];
         this.saved = false;
         // show save button along with giphys
         this.searchSvc.getPostObserve(param)
@@ -48,23 +49,24 @@ export class AppComponent {
       }
     )
 
-    // this.retrieveSvc.retrieveEvent.subscribe(
-    //   () => {
-    this.saved = true;
-    this.retrieveSvc.retrieveGiphys(54)
-      .then((results) => {
-        this.resultsArr = results;
-        console.log(results);
-        this.resultsArr.forEach(giphy => {
-          this.giphyId.push(giphy.giphyId);
-        })
-        console.log(this.giphyId);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-    //   }
-    // )
+    this.retrieveSvc.retrieveEvent.subscribe(
+      () => {
+        this.giphyId = [];
+        this.saved = true;
+        this.retrieveSvc.retrieveGiphys(this.cookieService.get('userId'))
+          .then((results) => {
+            this.resultsArr = results;
+            console.log(results);
+            this.resultsArr.forEach(giphy => {
+              this.giphyId.push(giphy.giphyId);
+            })
+            console.log(this.giphyId);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      }
+    )
   }
 
 }
