@@ -1,17 +1,19 @@
-import {Injectable} from '@angular/core';
+import {Injectable, EventEmitter} from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class GiphySavingService {
 
+    saveEvent = new EventEmitter<string>();
+
     constructor(private http: HttpClient) {}
 
-    saveToDb(uId: number, gId: string){
+    saveToDb(uId: string, gId: string){
         console.log("uid= " + uId)
         console.log("gid= " + gId)
 
         const param = new HttpParams()
-        .set('userId', uId.toString())
+        .set('userId', uId)
         .set('giphyId', gId);
 
         const headers = new HttpHeaders()
@@ -23,6 +25,7 @@ export class GiphySavingService {
         })
         .catch((err) => {
             console.log(err);
+            alert('Unable to save, please try again');
         });
     }
 }

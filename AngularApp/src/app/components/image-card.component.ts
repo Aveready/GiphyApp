@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { GiphySavingService } from '../../giphySaving.service'
 
 @Component({
   selector: 'app-image-card',
@@ -7,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ImageCardComponent implements OnInit {
 
-  constructor() { }
+  constructor( private savingService: GiphySavingService ) { }
   
   @Input() saved: boolean = null;
   @Input() giphyId: string = "";
