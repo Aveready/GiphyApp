@@ -22,6 +22,7 @@ export class GiphySavingService {
         this.http.post("http://localhost:8080/GiphyAppAPI/Save", param.toString(), {headers: headers})
         .toPromise()
         .then(() => {
+            alert('Giphy saved!');
         })
         .catch((err) => {
             console.log(err);
