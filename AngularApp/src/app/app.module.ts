@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { GiphySavingService } from '../giphySaving.service';
 import { GiphyRetrievalService } from '../giphyRetrieval.service';
@@ -22,7 +23,8 @@ import { TopBarComponent } from './Components/top-bar.component';
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule.forRoot()
   ],
   providers: [GiphySavingService, GiphyRetrievalService, SearchService, CookieService, UserAddingService],
   bootstrap: [AppComponent]
