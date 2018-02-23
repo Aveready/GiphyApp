@@ -3,3 +3,4 @@
 <div *ngFor="let giphy of giphyId">
   <app-image-card [saved] = "saved" [giphyId] = "giphy"></app-image-card>
 </div>
+<ngb-pagination (pageChange) = "pageChange($event)" [collectionSize]="12" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>

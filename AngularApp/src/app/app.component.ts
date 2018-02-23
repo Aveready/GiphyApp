@@ -6,6 +6,8 @@ import { SearchService } from '../search.service';
 import { UserAddingService } from '../userAdding.service';
 import { HttpParams } from '@angular/common/http/src/params';
 import { CookieService } from 'ngx-cookie-service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
@@ -19,27 +21,33 @@ export class AppComponent {
   giphyId: string[] = [];
   resultsArr: any[] = [];
   userId: string;
+  page = 1;
+  pageSize: number;
+  collectionSize: number;
 
-  constructor(private searchSvc: SearchService, private retrieveSvc: GiphyRetrievalService, private cookieService: CookieService, private userService: UserAddingService) { }
+  constructor(private searchSvc: SearchService,
+    private retrieveSvc: GiphyRetrievalService,
+    private cookieService: CookieService,
+    private userService: UserAddingService,
+    private ngbPageConfig: NgbPaginationConfig) { }
 
   ngOnInit() {
     if (!this.cookieService.check('userID')) {
       this.userService.addUser()
-      .then((newId) => {
-        console.log(newId);
-        this.userId = newId.userId;
-        this.cookieService.set('userID', this.userId, 1);
-        console.log(this.userId);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+        .then((newId) => {
+          console.log(newId);
+          this.userId = newId.userId;
+          this.cookieService.set('userID', this.userId, 1);
+          console.log(this.userId);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     }
-    else{
+    else {
       this.userId = this.cookieService.get('userID');
       console.log(this.userId);
     }
-    
 
     // subscribe to search
     this.searchSvc.searchEvent.subscribe(
@@ -80,5 +88,7 @@ export class AppComponent {
       }
     )
   }
-
+  pageChange(page: any) {
+    console.log(page);
+  }
 }

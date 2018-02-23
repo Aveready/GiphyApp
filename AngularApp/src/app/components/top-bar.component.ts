@@ -33,6 +33,10 @@ export class TopBarComponent implements OnInit {
     .set('offset', this.offset)
     .set('rating', this.ratings[2])
     .set('lang', this.language);
-    return this.searchService.searchEvent.next(httpParams);
+    return this.searchService.searchEvent.emit(httpParams);
+  }
+  retrieveSaved(){
+    console.log('retrieve button');
+    this.giphyRetrievalService.retrieveEvent.emit();
   }
   }
