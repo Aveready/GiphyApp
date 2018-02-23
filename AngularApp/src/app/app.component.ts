@@ -3,6 +3,7 @@ import { GiphySavingService } from '../giphySaving.service';
 import { NgForm } from '@angular/forms';
 import { GiphyRetrievalService } from '../giphyRetrieval.service';
 import { SearchService } from '../search.service';
+import { UserAddingService } from '../userAdding.service';
 import { HttpParams } from '@angular/common/http/src/params';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -19,15 +20,26 @@ export class AppComponent {
   resultsArr: any[] = [];
   userId: string;
 
-  constructor(private searchSvc: SearchService, private retrieveSvc: GiphyRetrievalService, private cookieService: CookieService) { }
+  constructor(private searchSvc: SearchService, private retrieveSvc: GiphyRetrievalService, private cookieService: CookieService, private userService: UserAddingService) { }
 
   ngOnInit() {
-
     if (!this.cookieService.check('userID')) {
-      this.cookieService.set('userID', 'Hello2', 1);
+      this.userService.addUser()
+      .then((newId) => {
+        console.log(newId);
+        this.userId = newId.userId;
+        this.cookieService.set('userID', this.userId, 1);
+        console.log(this.userId);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
     }
-    this.userId = this.cookieService.get('userID');
-    console.log(this.userId);
+    else{
+      this.userId = this.cookieService.get('userID');
+      console.log(this.userId);
+    }
+    
 
     // subscribe to search
     this.searchSvc.searchEvent.subscribe(
@@ -53,7 +65,7 @@ export class AppComponent {
       () => {
         this.giphyId = [];
         this.saved = true;
-        this.retrieveSvc.retrieveGiphys(this.cookieService.get('userId'))
+        this.retrieveSvc.retrieveGiphys(this.cookieService.get('userID'))
           .then((results) => {
             this.resultsArr = results;
             console.log(results);
