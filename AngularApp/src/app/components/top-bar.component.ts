@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpParams } from '@angular/common/http';
 import { SearchService } from '../../search.service';
@@ -17,7 +17,7 @@ export class TopBarComponent implements OnInit {
   // private api_key = 'yWGwOlIijDWcGy5DH9QV5wWr5wGwDXd3';
   private api_key = 'ncFswLvKX0DijHE7G1eVBKofyq6p44Ay';
   private query: string;
-  private limit = '25';
+  private limit = 25;
   private offset = '0';
   private ratings: string[] = ['Y', 'G', 'PG', 'PG-13', 'R'];
   private language = 'en';
@@ -29,9 +29,9 @@ export class TopBarComponent implements OnInit {
     const httpParams = new HttpParams()
     .set('api_key', this.api_key)
     .set('q', this.searchForm.value.searchText)
-    .set('limit', this.limit)
+    .set('limit', this.searchForm.value.returnSize)
     .set('offset', this.offset)
-    .set('rating', this.ratings[0])
+    .set('rating', this.ratings[2])
     .set('lang', this.language);
     return this.searchService.searchEvent.next(httpParams);
   }
