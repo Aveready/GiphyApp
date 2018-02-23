@@ -8,6 +8,7 @@ import { HttpParams } from '@angular/common/http/src/params';
 import { CookieService } from 'ngx-cookie-service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Pagination } from '../model';
 
 @Component({
   selector: 'app-root',
@@ -18,11 +19,14 @@ export class AppComponent {
 
   cookieValue = 'UNKNOWN';
   saved: boolean = false;
+  showPagination: boolean = false;
   giphyId: string[] = [];
   resultsArr: any[] = [];
   userId: string;
   page = 1;
   pageSize: number;
+  pagination: Pagination;
+  httpParams: HttpParams;
   collectionSize: number;
 
   constructor(private searchSvc: SearchService,
@@ -32,6 +36,12 @@ export class AppComponent {
     private ngbPageConfig: NgbPaginationConfig) { }
 
   ngOnInit() {
+    this.collectionSize = 4999;
+    this.pagination = {
+      count: 0,
+      offset: 0,
+  }
+
     if (!this.cookieService.check('userID')) {
       this.userService.addUser()
         .then((newId) => {
@@ -54,14 +64,23 @@ export class AppComponent {
       (param) => {
         this.giphyId = [];
         this.saved = false;
+        this.httpParams = param;
+        this.page = 1;
+        this.ngbPageConfig.pageSize = param.get('limit');
+        console.log(this.ngbPageConfig.pageSize);
         // show save button along with giphys
         this.searchSvc.getPostObserve(param)
           .then((searchResults) => {
             this.resultsArr = searchResults.data;
+            this.pagination = {
+              count: searchResults.pagination.count,
+              offset: searchResults.pagination.offset
+            };
             console.log(searchResults);
             this.resultsArr.forEach(giphy => {
               this.giphyId.push(giphy.id);
             })
+            this.showPagination = true;
           })
           .catch((err) => {
             console.log(err);
@@ -81,6 +100,7 @@ export class AppComponent {
               this.giphyId.push(giphy.giphyId);
             })
             console.log(this.giphyId);
+            this.showPagination = false;
           })
           .catch((err) => {
             console.log(err);
@@ -90,5 +110,21 @@ export class AppComponent {
   }
   pageChange(page: any) {
     console.log(page);
+    this.giphyId = [];
+    this.saved = false;
+    this.pagination.offset = (page - 1) *  Number(this.httpParams.get('limit'));
+    this.httpParams = this.httpParams.set('offset', this.pagination.offset.toString());
+    this.searchSvc.getPostObserve(this.httpParams)
+      .then((searchResults) => {
+        this.resultsArr = searchResults.data;
+        console.log(searchResults);
+        this.resultsArr.forEach(giphy => {
+          this.giphyId.push(giphy.id);
+        })
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    )
   }
 }
