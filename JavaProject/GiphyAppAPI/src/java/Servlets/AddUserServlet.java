@@ -31,27 +31,27 @@ public class AddUserServlet extends HttpServlet {
     private DataSource connPool;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        Integer userId = Integer.parseInt(req.getParameter("userId"));
-
         JsonArrayBuilder idBuilder = Json.createArrayBuilder();
         JsonObject idReturn = null;
 
         try (Connection conn = connPool.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO users () Values()");
-            stmt.setInt(1, userId);
             stmt.executeUpdate();
-            stmt.close();
 
             Statement query = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM users ORDER BY userId DESC LIMIT 1");
-
+            System.out.println("a");
+            System.out.println(rs);
+            System.out.println("b");
             while (rs.next()) {
                 idReturn = Json.createObjectBuilder()
                         .add("userId", rs.getInt("userId"))
                         .build();
             }
+            stmt.close();
+            query.close();
             rs.close();
 
             conn.close();
