@@ -1,6 +1,15 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <app-top-bar></app-top-bar>
-<div *ngFor="let giphy of giphyId">
-  <app-image-card [saved] = "saved" [giphyId] = "giphy"></app-image-card>
+<div class="container" style="padding-top: 70px">
+    <!-- <table class="table table-bordered">
+      <tr *ngFor="let giphy of giphyId">
+        <app-image-card [saved]="saved" [giphyId]="giphy"></app-image-card>
+      </tr>
+    </table> -->
+    <div class="card-columns">
+      <div class="card text-center" style="width: 20rem;" *ngFor="let giphy of giphyId">
+          <app-image-card [saved]="saved" [giphyId]="giphy"></app-image-card>
+      </div>
+    </div>
+    <ngb-pagination (pageChange)="pageChange($event)" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false"></ngb-pagination>
 </div>
-<ngb-pagination (pageChange) = "pageChange($event)" [collectionSize]="12" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>

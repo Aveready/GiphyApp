@@ -1,5 +1,20 @@
-<div>
-    <img src="https://media2.giphy.com/media/{{giphyId}}/giphy-downsized.gif">
-    <br>
-    <button *ngIf="!saved" (click)="saveGiphy()">Save</button>
+<!-- <div class="container-fluid"> -->
+<!-- <div class="row row align-items-center"> -->
+<!-- <td class="col">
+        <img class="img-fluid" src="https://media2.giphy.com/media/{{giphyId}}/giphy-downsized.gif">
+    </td>
+    <td class="col align-self-center" style="vertical-align: middle">
+        <button *ngIf="!saved" (click)="saveGiphy()">Save</button>
+    </td> -->
+<!-- <div class="col col-sm-4"></div> -->
+<!-- </div> -->
+<!-- </div> -->
+
+<!-- <div class="card" style="width: 20rem;"> -->
+<div class="container">
+    <img class="card-img-top img-fluid" src="https://media2.giphy.com/media/{{giphyId}}/giphy-downsized.gif" alt="Card image cap">
+    <div class="card-block">
+        <button *ngIf="!saved" (click)="saveGiphy()">Save</button>
+    </div>
 </div>
+<!-- </div> -->

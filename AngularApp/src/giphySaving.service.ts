@@ -25,7 +25,7 @@ export class GiphySavingService {
         })
         .catch((err) => {
             console.log(err);
-            alert('Unable to save, please try again');
+            alert('Failed to save, or already saved');
         });
     }
 }
